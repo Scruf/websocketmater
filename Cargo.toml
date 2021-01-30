@@ -18,4 +18,6 @@ hmac = {version="*"}
 sha2 = {version="*"}
 hex = {version="*"}
 json = {version="*"}
-serde_json= {version="*"}
+serde = {version="1.0.123", features=["derive"]}
+serde_derive = { version="1.0.123"}
+serde_json = {version="*"}
