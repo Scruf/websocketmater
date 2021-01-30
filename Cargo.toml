@@ -13,11 +13,8 @@ tokio-tungstenite = {version = "*", features=["tls"]}
 tokio = {version = "1.1.0", features=["full"]}
 log = {version = "0.4.13"}
 url = {version = "2.2.0"}
-rust-crypto = "^0.2"
 hmac = {version="*"}
 sha2 = {version="*"}
 hex = {version="*"}
-json = {version="*"}
-serde = {version="1.0.123", features=["derive"]}
-serde_derive = { version="1.0.123"}
-serde_json = {version="*"}
+serde = { version = "1.0.101", features = ["derive"] }
+serde_json = {version = "1.0.40"}
