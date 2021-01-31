@@ -64,19 +64,19 @@ fn create_signature(key: String, secret: String) -> Signature{
 
 }
 
-fn get_signature(api_keys: ApiKeys) -> String{
-    let sing = create_signature(api_keys.api_key, api_keys.secret);
-    let api_keys = Auth_OBJ{
-        key: api_keys.api_key,
+fn get_signature(api: ApiKeys) -> String{
+    let sing = create_signature(api.api_key.to_owned(), api.secret.to_owned());
+    let  auth_k = Auth_OBJ{
+        key: api.api_key,
         signature: sing.hmac_signature.to_uppercase(),
-        timestamp: String::from(sing.timestamp)
+        timestamp: sing.timestamp.to_string()
     };
-    api_auth = API_AUTH{
+    let api_auth = API_Auth{
         e: String::from("auth"),
-        auth: api_keys,
+        auth: auth_k,
         oid: String::from("auth")
-    }
-    return serde_json::to_str(&api_auth).unwrap();
+    };
+    return serde_json::to_string(&api_auth).unwrap();
 }
 
 #[tokio::main]
@@ -88,17 +88,15 @@ async fn main() {
                             secret: String::from("fgII1PmKZdx5m23hFJnv70Wjp5w")};
     let (ws_stream, _) = connect_async(url)
         .await.expect("Failed to connect");
-    info!("Finished websocket handshake");
-    print!("Finished handshake");
     let (mut write, read) = ws_stream.split();
 
     let sign =  get_signature(_api_keys);
-    println!("{}", sign)
-
+    println!("{}", sign);
+    write.send(Message::Text(sign)).await.expect("Failed to send");
+            
     let ws_to_stout = {
         read.for_each(| message| async {
             let data = message.unwrap().into_data();
-            print!("{:?}", data);
             tokio::io::stdout().write_all(&data).await.unwrap();
         })
     };
