@@ -83,9 +83,9 @@ fn get_signature(api: ApiKeys) -> String{
 async fn main() {
     let connect_addres = "wss://ws.cex.io/ws/";
     let url = Url::parse(&connect_addres).unwrap();
-    let _api_keys = ApiKeys{api_key: String::from("mSwkNCjB9xaIrWQuWDnsbghKRc"),
-                            user_id: String::from("up134935852"),
-                            secret: String::from("fgII1PmKZdx5m23hFJnv70Wjp5w")};
+    let _api_keys = ApiKeys{api_key: String::from(API_KEY),
+                            user_id: String::from(USER_ID),
+                            secret: String::from(SECRET)};
     let (ws_stream, _) = connect_async(url)
         .await.expect("Failed to connect");
     let (mut write, read) = ws_stream.split();
